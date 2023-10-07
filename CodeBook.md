@@ -1,49 +1,64 @@
 # Code Book - Tidy Averages
 
-Variable information for the tidy averages data set (`tidy_averages.csv`) produced for the "Getting and Cleaning Data" course on Coursera.
+Variable information for the tidy averages data set (`tidy_averages.txt`) produced for the "Getting and Cleaning Data" course on Coursera.
 
 ## Source data and processing
 
-The tidy averages data set contains 11880 observations of 4 variables. It is derived from sensor data data collected from the accelerometers of Samsung Galaxy S smartphones. The source data and documentation are available from <http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones>
+The tidy averages data set contains 11880 observations of 4 variables and is an example of "long" tidy data). It is derived from sensor data data collected from the accelerometers of Samsung Galaxy S smartphones by this project:
 
-In addition to this code book, the project repository in GitHub (<https://github.com/sagarana/getting_cleaning_course_project>) contains the following:
+> Davide Anguita, Alessandro Ghio, Luca Oneto, Xavier Parra and Jorge L. Reyes-Ortiz. Human Activity Recognition on Smartphones using a Multiclass Hardware-Friendly Support Vector Machine. International Workshop of Ambient Assisted Living (IWAAL 2012). Vitoria-Gasteiz, Spain. Dec 2012
+
+The source data and documentation are available from <http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones>
+
+The file `original_UCI_HAR_data/README.txt` describes how data was collected by Anguita et. al.:
+
+> "The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz."
+
+For additional information see these files and documentation in the project repository on GitHub (<https://github.com/sagarana/getting_cleaning_course_project>):
 
 -   `original_UCI_HAR_data` - directory with a copy of the source data and documentation as downloaded from <https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip>
--   `README.md` - an overview of the project
+-   `README.md` - an overview of the project and associated files
 -   `run_analysis.R` - the script that processes the source data to produce the tidy averages data set, including instructions and notes about the process
--   `tidy_averages.csv` - the processed data set
+-   `tidy_averages.txt` - the processed data set
 
 ## Variables in the tidy averages data set
+
+`tidy_averages.txt` contains 11880 observations of 4 variables: activity, subject, feature, and mean.
 
 ### activity
 
 **Name:** activity\
 **Description:** The activity the subject was engaged in when smartphone sensor data was collected.\
 **R data type:** factor\
-**Levels:** WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING
+**Levels:** WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING\
+**Notes:** levels drawn from original documentation at `original_UCI_HAR_data/activity_labels.txt`
 
 ### subject
 
 **Name:** subject\
-**Description:** An identifier for the study participant (subject). 30 subjects are represented in the data.\
+**Description:** An identifier for the study participant. 30 subjects are represented in the data.\
 **R data type:** factor\
-**Levels:** 1 to 30
+**Levels:** 1 to 30\
 
 ### feature
 
 **Name:** feature\
-**Description:** A measure derived from accelerometer and gyroscope data for each observation. Feature names and their content are described by the original study authors in `original_UCI_HAR_data/features_info.txt`. The `tidy_averages.csv` file is contains all features with "std()" or "mean()" in the feature name (66 of the original 561 features). See appendix for the full list of feature names in `tidy_averages.csv`.\
-**R data type:** character
+**Description:** A measure derived from accelerometer and gyroscope data for each observation. Feature names and their content are described by the original study authors in `original_UCI_HAR_data/features_info.txt`. The `tidy_averages.txt` file contains the subset of features that have "std()" or "mean()" in the feature name (66 of the original 561 features). See the appendix for the full list of feature names included in `tidy_averages.txt`.\
+**R data type:** character\
+**Notes:** The list of all features in the source data is available at `original_UCI_HAR_data/features.txt`.
 
 ### mean
 
 **Name:** mean\
-**Description:** The average of all data points for a given feature, subject, and activity.\
-**R data type:** numeric
+**Description:** The average of all data points for each combination of subject, activity, and feature.\
+**R data type:** numeric (normalized with values between -1 and 1)\
+**Notes**: The assignment indicates that the output data can be either "long" or "wide." `tidy_averages.txt` is a long tidy data set where all calculated means are in the same column.
 
 ## Appendix - Features
 
-List of the 66 features that appear in `tidy_average.csv`. There are 561 features in the source data but only features whose names contain "mean()" or "std()" are included in `tidy_average.csv`.
+### Features list
+
+List of the 66 features that appear in `tidy_average.txt`. There are 561 features in the source data but only features whose names contain "mean()" or "std()" are included in `tidy_average.txt`. For a key to interpret the feature names see the *Naming* section below the list.
 
 [1] "tBodyAcc-mean()-X"\
 [2] "tBodyAcc-mean()-Y"\
@@ -111,3 +126,39 @@ List of the 66 features that appear in `tidy_average.csv`. There are 561 feature
 [64] "fBodyBodyGyroMag-std()"\
 [65] "fBodyBodyGyroJerkMag-mean()"\
 [66] "fBodyBodyGyroJerkMag-std()"
+
+### Naming
+
+*The quoted text below (indented) is from `original_UCI_HAR_data/features_info.txt`*
+
+> The features selected for this database come from the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ. These time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz.
+>
+> Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag).
+>
+> Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals).
+>
+> These signals were used to estimate variables of the feature vector for each pattern:\
+> '-XYZ' is used to denote 3-axial signals in the X, Y and Z directions.
+>
+> tBodyAcc-XYZ\
+> tGravityAcc-XYZ\
+> tBodyAccJerk-XYZ\
+> tBodyGyro-XYZ\
+> tBodyGyroJerk-XYZ\
+> tBodyAccMag\
+> tGravityAccMag\
+> tBodyAccJerkMag\
+> tBodyGyroMag\
+> tBodyGyroJerkMag\
+> fBodyAcc-XYZ\
+> fBodyAccJerk-XYZ\
+> fBodyGyro-XYZ\
+> fBodyAccMag\
+> fBodyAccJerkMag\
+> fBodyGyroMag\
+> fBodyGyroJerkMag
+
+A set of variables were estimated from these signals. Only the two variables listed below were used in `tidy_averages.txt`:
+
+-   mean(): Mean value
+-   std(): Standard deviation

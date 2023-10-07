@@ -2,8 +2,9 @@
 # of Samsung Galaxy S smartphones. The source data and documentation is available from
 # http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
 #
-# A copy of the source data is saved in the "original_UCI_HAR_data" directory.
-# The script processes the source data following the Course Project instructions 
+# A copy of the source data is saved in the "original_UCI_HAR_data" directory
+# of the GitHub repository (https://github.com/sagarana/getting_cleaning_course_project). 
+# This script processes the source data following the Course Project instructions 
 # for the Coursera course "Getting and Cleaning Data":
 # 
 #   1. Merge the training and the test sets to create one data set
@@ -14,14 +15,18 @@
 #   5. From the data set in step 4, create a second, independent tidy data set 
 #      with the average of each variable for each activity and each subject
 #
-# The tidy data set created in step 5 is saved as `tidy_averages.csv` and
-# consists of 11880 observations of 4 variabes. See `Codebook.md` for more
+# The tidy data set created in step 5 is saved as `tidy_averages.txt` and
+# consists of 11880 observations of 4 variables. See `Codebook.md` for more
 # information about the tidy_averages data set.
 #
-# The source data, processing script, codebook, and output are available in 
+# The instructions indicate that the tidy data set may be "long" or "wide." 
+# This script creates a long data set, where the calculated means are all contained
+# in one column, with the corresponding feature name in another column.
+#
+# The source data, processing script, code book, and output are available in 
 # GitHub at https://github.com/sagarana/getting_cleaning_course_project.
 # The script assumes that the R working directory is set to the top-level 
-# directory of the repository.
+# directory of the GitHub repository.
 
 library(tidyr)
 library(dplyr)
@@ -72,6 +77,8 @@ levels(data_subset$activity) <- activity_names[,2] # assign names to activity fa
 
 # Step 4: Appropriately label the data set with descriptive variable names
 
+
+
 ### This was already done in step 2.1 ###
 
 # Step 5: From the data set in step 4, create a second, independent tidy data set
@@ -84,4 +91,4 @@ tidy_averages <- data_subset %>%
               group_by(activity, subject, variable) %>%
               summarize(mean = mean(value), .groups="keep")
 
-write.csv(tidy_averages, "tidy_averages.csv", row.names = FALSE)
+write.table(tidy_averages, "tidy_averages.txt", row.names = FALSE)
